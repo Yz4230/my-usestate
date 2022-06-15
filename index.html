@@ -1,0 +1,65 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My useState</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      const app = document.getElementById("app");
+
+      let render;
+
+      let stateCounter = 0;
+      const states = [];
+      const useState = (init) => {
+        const counter = stateCounter;
+        if (states.length === counter) {
+          states.push(init);
+        }
+        const state = states[counter];
+        const setState = (newState) => {
+          states[counter] = newState;
+          render();
+        };
+        stateCounter++;
+        return [state, setState];
+      };
+
+      let Counter;
+      render = () => {
+        app.innerHTML = "";
+        app.appendChild(Counter());
+        stateCounter = 0;
+      };
+
+      Counter = () => {
+        const [count, setCount] = useState(0);
+        const [message, setMessage] = useState("");
+
+        const handleClick = () => {
+          setCount(count + 1);
+          setMessage(`char: ${count}`);
+        };
+
+        const button = document.createElement("button");
+        button.innerText = `Clicked ${count} times, ${message}`;
+        button.addEventListener("click", handleClick);
+        return button;
+      };
+
+      render();
+    </script>
+  </body>
+</html>
